@@ -91,16 +91,16 @@ type SkyRPC struct {
 
 // BtcRPC config for btcrpc
 type BtcRPC struct {
-	Server  string `mapstructure:"server"`
-	User    string `mapstructure:"user"`
-	Pass    string `mapstructure:"pass"`
-	Cert    string `mapstructure:"cert"`
+	Server string `mapstructure:"server"`
+	User   string `mapstructure:"user"`
+	Pass   string `mapstructure:"pass"`
+	Cert   string `mapstructure:"cert"`
 }
 
 // EthRPC config for ethrpc
 type EthRPC struct {
-	Server  string `mapstructure:"server"`
-	Port    string `mapstructure:"port"`
+	Server string `mapstructure:"server"`
+	Port   string `mapstructure:"port"`
 }
 
 // BtcScanner config for BTC scanner
@@ -109,7 +109,7 @@ type BtcScanner struct {
 	ScanPeriod            time.Duration `mapstructure:"scan_period"`
 	InitialScanHeight     int64         `mapstructure:"initial_scan_height"`
 	ConfirmationsRequired int64         `mapstructure:"confirmations_required"`
-	Enabled bool   `mapstructure:"enabled"`
+	Enabled               bool          `mapstructure:"enabled"`
 }
 
 // EthScanner config for ETH scanner
@@ -118,7 +118,7 @@ type EthScanner struct {
 	ScanPeriod            time.Duration `mapstructure:"scan_period"`
 	InitialScanHeight     int64         `mapstructure:"initial_scan_height"`
 	ConfirmationsRequired int64         `mapstructure:"confirmations_required"`
-	Enabled bool   `mapstructure:"enabled"`
+	Enabled               bool          `mapstructure:"enabled"`
 }
 
 // SkyScanner config for SKY Scanner
@@ -126,7 +126,7 @@ type SkyScanner struct {
 	// How often to try to scan for blocks
 	ScanPeriod        time.Duration `mapstructure:"scan_period"`
 	InitialScanHeight int64         `mapstructure:"initial_scan_height"`
-	Enabled bool `mapstrucutre:"enabled"`
+	Enabled           bool          `mapstrucutre:"enabled"`
 }
 
 // SkyExchanger config for skycoin sender
