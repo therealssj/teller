@@ -55,6 +55,8 @@ type Config struct {
 	BtcAddresses string `mapstructure:"btc_addresses"`
 	// Path of ETH addresses JSON file
 	EthAddresses string `mapstructure:"eth_addresses"`
+	// Path of SKY addresses JSON file
+	SkyAddresses string `mapstructure:"sky_addresses"`
 
 	Teller Teller `mapstructure:"teller"`
 
@@ -64,6 +66,7 @@ type Config struct {
 
 	BtcScanner   BtcScanner   `mapstructure:"btc_scanner"`
 	EthScanner   EthScanner   `mapstructure:"eth_scanner"`
+	SkyScanner   SkyScanner   `mapstructure:"sky_scanner"`
 	SkyExchanger SkyExchanger `mapstructure:"sky_exchanger"`
 
 	Web Web `mapstructure:"web"`
@@ -88,18 +91,16 @@ type SkyRPC struct {
 
 // BtcRPC config for btcrpc
 type BtcRPC struct {
-	Server  string `mapstructure:"server"`
-	User    string `mapstructure:"user"`
-	Pass    string `mapstructure:"pass"`
-	Cert    string `mapstructure:"cert"`
-	Enabled bool   `mapstructure:"enabled"`
+	Server string `mapstructure:"server"`
+	User   string `mapstructure:"user"`
+	Pass   string `mapstructure:"pass"`
+	Cert   string `mapstructure:"cert"`
 }
 
 // EthRPC config for ethrpc
 type EthRPC struct {
-	Server  string `mapstructure:"server"`
-	Port    string `mapstructure:"port"`
-	Enabled bool   `mapstructure:"enabled"`
+	Server string `mapstructure:"server"`
+	Port   string `mapstructure:"port"`
 }
 
 // BtcScanner config for BTC scanner
@@ -108,6 +109,7 @@ type BtcScanner struct {
 	ScanPeriod            time.Duration `mapstructure:"scan_period"`
 	InitialScanHeight     int64         `mapstructure:"initial_scan_height"`
 	ConfirmationsRequired int64         `mapstructure:"confirmations_required"`
+	Enabled               bool          `mapstructure:"enabled"`
 }
 
 // EthScanner config for ETH scanner
@@ -116,6 +118,15 @@ type EthScanner struct {
 	ScanPeriod            time.Duration `mapstructure:"scan_period"`
 	InitialScanHeight     int64         `mapstructure:"initial_scan_height"`
 	ConfirmationsRequired int64         `mapstructure:"confirmations_required"`
+	Enabled               bool          `mapstructure:"enabled"`
+}
+
+// SkyScanner config for SKY Scanner
+type SkyScanner struct {
+	// How often to try to scan for blocks
+	ScanPeriod        time.Duration `mapstructure:"scan_period"`
+	InitialScanHeight int64         `mapstructure:"initial_scan_height"`
+	Enabled           bool          `mapstrucutre:"enabled"`
 }
 
 // SkyExchanger config for skycoin sender
@@ -318,7 +329,7 @@ func (c Config) Validate() error {
 	}
 
 	if !c.Dummy.Scanner {
-		if c.BtcRPC.Enabled {
+		if c.BtcScanner.Enabled {
 			if c.BtcRPC.Server == "" {
 				oops("btc_rpc.server missing")
 			}
@@ -337,7 +348,7 @@ func (c Config) Validate() error {
 				oops("btc_rpc.cert file does not exist")
 			}
 		}
-		if c.EthRPC.Enabled {
+		if c.EthScanner.Enabled {
 			if c.EthRPC.Server == "" {
 				oops("eth_rpc.server missing")
 			}
@@ -398,15 +409,18 @@ func setDefaults() {
 
 	// BtcRPC
 	viper.SetDefault("btc_rpc.server", "127.0.0.1:8334")
-	viper.SetDefault("btc_rpc.enabled", true)
-
-	// EthRPC
-	viper.SetDefault("eth_rpc.enabled", false)
 
 	// BtcScanner
 	viper.SetDefault("btc_scanner.scan_period", time.Second*20)
 	viper.SetDefault("btc_scanner.initial_scan_height", int64(492478))
 	viper.SetDefault("btc_scanner.confirmations_required", int64(1))
+	viper.SetDefault("btc_scanner.enabled", true)
+
+	// EthScanner
+	viper.SetDefault("eth_scanner.enabled", false)
+
+	// SkyScanner
+	viper.SetDefault("sky_scanner.enabled", false)
 
 	// SkyExchanger
 	viper.SetDefault("sky_exchanger.tx_confirmation_check_wait", time.Second*5)
